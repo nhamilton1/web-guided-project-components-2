@@ -161,7 +161,7 @@ function getDogs(breed, number) {
 }
 
 
-getDogs('weimaraner', 3)
+// getDogs('weimaraner', 3)
 
 // 👉 (OPTIONAL) TASK 7- Put a button in index.html to 'get dogs' and add a click
 // event listener that executes `getDogs`
@@ -169,12 +169,20 @@ getDogs('weimaraner', 3)
 
 const btn = document.querySelector('.get-dog');
 btn.addEventListener('click', event => {
+  const num = document.querySelector('.num-dog').value
+  entryPoint.innerHTML = "";
+  if (num > 0) {
   const dogs = axios.get('https://lambda-times-api.herokuapp.com/breeds')
     .then(res => {
       res.data.forEach(breed => {
-        getDogs(breed, 3)
+        getDogs(breed, num)
       });
     }).catch(err => console.error(err))
+  } else {
+    const error = document.createElement('h3')
+    error.textContent = "You've gotta enter a number greater than 0 yea chump!"
+    entryPoint.appendChild(error)
+  }
 })
 
 
