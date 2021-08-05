@@ -1,5 +1,46 @@
+// import { result } from 'lodash'
+
+
+// console.log(axios)
+
+//HTTP is a protocal for communication for two computers, who are connected over the network to talk to eachother 
+//lambda-times-api.herokuapp.com/ is the ip address of a particular mechine
+///friends is a resource on the server
+
+// https://httpie.io/run --> http request is on the top. the first line is the start line. header is next, additional information about the request
+// console.log(results) // the data is not here
+console.log('1 about to fetch data with axios')
+
+
+//idomatic way
+
+axios.get('https://lambda-times-api.herokuapp.com/friends')
+  .then(futureData => {
+  //future code, for when the data acutally arrives
+  //freedom to assume the data is here
+  console.log('2 here is the future data',futureData)
+  console.log('here is the RESPONSE BODY', futureData.data)
+})
+  .catch(drama => {
+  //handle the drama
+  console.log(drama)
+})
+
+// if you want to handle several different promises
+//promise.all([p1, p2, p3]).then([res1, res2, res3])
+
+console.log('3 we requested data with axios')
+// a promise is an object that represents the result of a computation
+// we need it so it doesnt block on program 
+
 // Imports at the top of the file!
 // We never nest imports inside blocks of code!
+
+//penidng ::: when its waiting to go through
+//fulfilled ::: when it successeds
+//rejected ::: when it goes straight to the failer
+//selected ::: 
+
 
 
 // 👉 TASK 1- Test out the following endpoints:
@@ -19,7 +60,7 @@
 
 // 👉 TASK 2- Select the "entry point", the element
 // inside of which we'll inject our dog cards 
-const entryPoint = null
+const entryPoint = document.querySelector('.entry');
 
 
 // 👉 TASK 3- `dogCardMaker` takes an object and returns a Dog Card.
@@ -53,9 +94,37 @@ function dogCardMaker({ imageURL, breed }) {
 
 // 👉 TASK 5- Fetch dogs from `https://dog.ceo/api/breed/{breed}/images/random/{number}`
 //    * ON SUCCESS: use the data to create dogCards and append them to the entry point
-//    * ON FAILURE: log the error to the console
+//    * ON FAILURE: log the error to the console put breakpoint
 //    * IN ANY CASE: log "done" to the console
 
+
+axios.get('https://dog.ceo/api/breed/husky/images/random/6')
+  .then(res => {
+    const images = res.data.message
+    images.forEach(image => {
+      //make doge card
+      const dogCard = dogCardMaker({imageURL: image, breed: 'husky' })
+      console.log(dogCard)
+      //append it to the DOM
+      entryPoint.append(dogCard)
+    });
+})
+  .catch(err => {
+    // debugger
+})
+
+
+fetch('https://dog.ceo/api/breed/husky/images/random/6')
+  .then(res => {
+    // the body is not in yet, only headers
+    return res.json()
+  })
+  .then(parsedJSON => {
+    //here is the data!
+  })
+  .catch (err => {
+    debugger
+  })
 
 // 👉 (OPTIONAL) TASK 6- Wrap the fetching operation inside a function `getDogs`
 // that takes a breed and a count (of dogs)
